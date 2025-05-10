@@ -1,11 +1,14 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MovieStoreMvcWeb.Repositories.Abstract;
 using MovieStoreMvcWeb.Models.Domain;
+using MovieStoreMvcWeb.Repositories.Implementation;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IUserAuthenticationService, UserAuthenticationService>();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -19,10 +22,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<DatabaseContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    options.LoginPath = "/UserAuthentication/Login";
-});
+//builder.Services.ConfigureApplicationCookie(options =>{options.LoginPath = "/UserAuthentication/Login";});
 
 var app = builder.Build();
 
@@ -38,7 +38,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
