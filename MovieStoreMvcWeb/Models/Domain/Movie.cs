@@ -1,21 +1,35 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MovieStoreMvcWeb.Models.Domain
 {
     public class Movie
     {
-        [Key]
         public int Id { get; set; }
         [Required]
-        public string Title { get; set; }
+        public string? Title { get; set; }
         [Required]
-        public string ReleaseYear { get; set; }
+        public string? ReleaseYear { get; set; }
+
+        public string? MovieImage { get; set; }  // stores movie image name with extension (eg, image0001.jpg)
         [Required]
-        public string MovieImage { get; set; }
+        public string? Cast { get; set; }
         [Required]
-        public string Cast { get; set; }
+        public string? Director { get; set; }
+
+        [NotMapped]
+        public IFormFile? ImageFile { get; set; }
+        [NotMapped]
         [Required]
-        public string Director { get; set; }
+        public List<int>? Genres { get; set; }
+        [NotMapped]
+        public IEnumerable<SelectListItem>? GenreList { get; set; }
+        [NotMapped]
+        public string? GenreNames { get; set; }
+
+        [NotMapped]
+        public MultiSelectList? MultiGenreList { get; set; }
 
     }
 }
